@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 namespace LibraryManagement.Application.InputModels
 {
     public class UpdateLoanInputModel
-    {
+    {        
+        public int IdUser { get; set; }
+        public int IdBook { get; set; }
+        public DateTime LoanStartedAt { get; set; }
     }
 }

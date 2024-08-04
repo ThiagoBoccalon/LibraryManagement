@@ -10,6 +10,7 @@ builder.Services.AddSingleton<LibraryManagementDbContext>();
 
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 builder.Services.AddControllers();
 

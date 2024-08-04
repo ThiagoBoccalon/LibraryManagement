@@ -8,5 +8,8 @@ namespace LibraryManagement.Application.InputModels
 {
     public class NewLoanInputModel
     {
+        public int IdUser { get; set; }
+        public int IdBook { get; set; }
+        public DateTime LoanStartedAt { get; set; }
     }
 }
