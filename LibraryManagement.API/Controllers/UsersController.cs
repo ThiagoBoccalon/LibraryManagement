@@ -14,13 +14,6 @@ namespace LibraryManagement.API.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public IActionResult GetAllForTest()
-        {
-            var user = _userService.GetAllForTest();
-
-            return Ok(user);
-        } 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {

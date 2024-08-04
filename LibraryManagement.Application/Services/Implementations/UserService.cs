@@ -21,19 +21,6 @@ namespace LibraryManagement.Application.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public List<UserViewModel> GetAllForTest()
-        {
-            var users = _dbContext.Users;
-
-            if (users == null) return null;
-
-            var usersViewModel = users
-               .Select(p => new UserViewModel(p.UserName, p.Email))
-               .ToList();
-
-            return usersViewModel;
-        }
-
         public UserViewModel GetUser(int id)
         {
             var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);

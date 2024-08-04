@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace LibraryManagement.Application.Services.Interfaces
 {
     public interface IUserService
-    {
-        List<UserViewModel> GetAllForTest();
+    {   
         UserViewModel GetUser(int id);
         int Create(CreateUserInputModel inputModel);
     }
