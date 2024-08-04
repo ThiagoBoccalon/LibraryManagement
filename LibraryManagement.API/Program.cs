@@ -1,3 +1,4 @@
+using LibraryManagement.API.Controllers;
 using LibraryManagement.Application.Services.Implementations;
 using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Infrastructure.Persistence;
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<LibraryManagementDbContext>();
 
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 
