@@ -1,8 +1,16 @@
+using LibraryManagement.Application.Services.Implementations;
+using LibraryManagement.Application.Services.Interfaces;
+using LibraryManagement.Infrastructure.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<LibraryManagementDbContext>();
+
+builder.Services.AddScoped<IBookService, BookService>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

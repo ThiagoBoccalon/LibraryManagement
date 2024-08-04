@@ -10,7 +10,7 @@ namespace LibraryManagement.Infrastructure.Persistence
 {
     public class LibraryManagementDbContext : DbContext
     {
-        public LibraryManagementDbContext(DbContextOptions<LibraryManagementDbContext> options) : base(options)
+        public LibraryManagementDbContext()
         {
             Books = new List<Book>()
             {

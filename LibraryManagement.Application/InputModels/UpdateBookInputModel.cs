@@ -8,5 +8,10 @@ namespace LibraryManagement.Application.InputModels
 {
     public class UpdateBookInputModel
     {
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public int PublicationYear { get; set; }
+        public string ISBN { get; set; }
+        public int IdLibrary { get; set; }
     }
 }

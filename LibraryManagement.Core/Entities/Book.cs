@@ -25,5 +25,26 @@ namespace LibraryManagement.Core.Entities
         public string ISBN { get; private set; }
         public int PublicationYear { get; private set; }
         public BookStatusEnum Status { get; private set; }
+
+        public void Update(string title, string author, string isbn, int publicationYear, int idLibrary)
+        {
+            Title = title;
+            Author = author;
+            ISBN = isbn;
+            PublicationYear = publicationYear;
+            Status = BookStatusEnum.Available;
+        }
+
+        public void GettingBookAvaililable()
+        {
+            if (Status == BookStatusEnum.Unvailable)
+                Status = BookStatusEnum.Available;
+        }
+
+        public void GettingBookUnvailible()
+        {
+            if (Status == BookStatusEnum.Available)
+                Status = BookStatusEnum.Unvailable;
+        }
     }
 }
