@@ -26,7 +26,7 @@ namespace LibraryManagement.Core.Entities
         public int PublicationYear { get; private set; }
         public BookStatusEnum Status { get; private set; }
 
-        public void Update(string title, string author, string isbn, int publicationYear, int idLibrary)
+        public void Update(string title, string author, string isbn, int publicationYear)
         {
             Title = title;
             Author = author;

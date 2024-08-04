@@ -93,8 +93,8 @@ namespace LibraryManagement.Application.Services.Implementations
                 inputModel.Title,
                 inputModel.Author,
                 inputModel.ISBN,
-                inputModel.PublicationYear,
-                inputModel.IdLibrary);
+                inputModel.PublicationYear
+                );
         }
 
         public void Delete(int id)
