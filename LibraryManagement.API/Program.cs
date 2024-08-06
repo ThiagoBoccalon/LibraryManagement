@@ -1,8 +1,26 @@
+using LibraryManagement.API.Controllers;
+using LibraryManagement.API.Models;
+using LibraryManagement.Application.Services.Implementations;
+using LibraryManagement.Application.Services.Interfaces;
+using LibraryManagement.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var config = builder.Configuration;
+builder.Services.Configure<OpeningTimeOption>(config.GetSection("OpeningTime"));
+
+var connectionString = builder.Configuration.GetConnectionString("LibraryManagementCs");
+builder.Services.AddDbContext<LibraryManagementDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
