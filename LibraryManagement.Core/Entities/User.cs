@@ -10,10 +10,13 @@ namespace LibraryManagement.Core.Entities
 {
     public class User : BaseEntity
     {
-        public User(string username, string email, RoleEnum role)
+        protected User() { }
+        public User(string username, string address, string postcode, string email, RoleEnum role)
         {
             UserName = username;
             Email = email;
+            Address = address;
+            PostCode = postcode;
             Role = role;
         }
         public string UserName { get; private set; }

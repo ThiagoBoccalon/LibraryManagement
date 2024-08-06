@@ -26,6 +26,7 @@ namespace LibraryManagement.Application.Services.Implementations
 
             var loan = new Loan(inputModel.IdUser, inputModel.IdBook);
             _dbContext.Loans.Add(loan);
+            _dbContext.SaveChanges();
 
             return loan.Id;
         }
@@ -89,7 +90,10 @@ namespace LibraryManagement.Application.Services.Implementations
 
             if (loan == null) return "NotFound";
 
-            return loan.Renewal();
+            var result = loan.Renewal();
+            _dbContext.SaveChanges();
+
+            return result;
 
         }
 
@@ -99,8 +103,11 @@ namespace LibraryManagement.Application.Services.Implementations
 
             if (loan == null) return "NotFound";
 
+            var result = loan.Return(DateTime.Now);
 
-            return loan.Return(DateTime.Now);
+            _dbContext.SaveChanges();
+
+            return result;
         }
 
         public void Update(int id, UpdateLoanInputModel inputModel)
@@ -108,6 +115,8 @@ namespace LibraryManagement.Application.Services.Implementations
             var loan = _dbContext.Loans.FirstOrDefault(l => l.Id == id);
 
             loan.Update(inputModel.IdUser, inputModel.IdBook, inputModel.LoanStartedAt);
+
+            _dbContext.SaveChanges();
         }
 
         public string Delete(int id)
@@ -116,7 +125,11 @@ namespace LibraryManagement.Application.Services.Implementations
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == loan.IdBook);
 
             book.GettingBookAvaililable();
-            return loan.Delete();
+
+            var result = loan.Delete();
+            _dbContext.SaveChanges();
+
+            return result;
         }
     }
 }

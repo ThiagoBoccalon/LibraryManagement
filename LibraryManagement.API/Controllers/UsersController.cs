@@ -27,10 +27,18 @@ namespace LibraryManagement.API.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] CreateUserInputModel inputModel)
+        [HttpPost("api/commonUser")]
+        public IActionResult PostCommonUser([FromBody] CreateUserCommonInputModel inputModel)
         {
-            var id = _userService.Create(inputModel);
+            var id = _userService.CreateUserCommon(inputModel);
+
+            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+        }
+
+        [HttpPost("api/staffUser")]
+        public IActionResult PostStaffuser([FromBody] CreateUserStaffInputModel inputModel)
+        {
+            var id = _userService.CreateUserStaff(inputModel);
 
             return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
         }

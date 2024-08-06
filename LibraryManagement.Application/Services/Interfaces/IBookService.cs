@@ -13,7 +13,7 @@ namespace LibraryManagement.Application.Services.Interfaces
     {
         List<BookViewModel> GetAll(string query);
         BookViewModel GetById(int id);
-        List<BookDetailsViewModel> GetAllWithParameter(string query, BookStatusEnum bookStatusEnum);
+        List<BookViewModel> GetAllWithParameter(string query, BookStatusEnum bookStatusEnum);
         int Create(NewBookInputModel inputModel);
         void Update(int id, UpdateBookInputModel inputModel);
         void Delete(int id);

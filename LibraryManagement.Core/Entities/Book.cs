@@ -9,6 +9,7 @@ namespace LibraryManagement.Core.Entities
 {
     public class Book : BaseEntity
     {
+        protected Book() { }
         public Book(string title,
             string author,
             string isbn,
@@ -46,5 +47,12 @@ namespace LibraryManagement.Core.Entities
             if (Status == BookStatusEnum.Available)
                 Status = BookStatusEnum.Unvailable;
         }
+
+        public void GettingBookDeleted()
+        {
+            if (Status != BookStatusEnum.Deleted)
+                Status = BookStatusEnum.Deleted;
+        }
+
     }
 }

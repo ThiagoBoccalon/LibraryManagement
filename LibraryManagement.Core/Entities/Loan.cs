@@ -9,6 +9,7 @@ namespace LibraryManagement.Core.Entities
 {
     public class Loan : BaseEntity
     {
+        protected Loan() { }
         public Loan(int idUser, int idBook)
         {
             IdUser = idUser;

@@ -2,6 +2,7 @@
 using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Core.Entities;
+using LibraryManagement.Core.Enums;
 using LibraryManagement.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
@@ -30,11 +31,25 @@ namespace LibraryManagement.Application.Services.Implementations
             return new UserViewModel(user.UserName, user.Email);
         }
 
-        public int Create(CreateUserInputModel inputModel)
+        public int CreateUserCommon(CreateUserCommonInputModel inputModel)
         {
-            var user = new User(inputModel.UserName, inputModel.Email, inputModel.Role);
+            var user = new User(inputModel.UserName, inputModel.Address, inputModel.PostCode, inputModel.Email, RoleEnum.CommonUserLibrary);
 
             _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();   
+
+            return user.Id;
+        }
+
+        public int CreateUserStaff(CreateUserStaffInputModel inputModel)
+        {            
+            var address = "";
+            var postCode = "";
+
+            var user = new User(inputModel.UserName, address, postCode, inputModel.Email, RoleEnum.StaffUserLibrary);
+
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
 
             return user.Id;
         }

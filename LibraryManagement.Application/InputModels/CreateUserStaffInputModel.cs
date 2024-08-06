@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.InputModels
 {
-    public class CreateUserInputModel
+    public class CreateUserStaffInputModel
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public RoleEnum Role { get; set; }
+        public string UserName { get; set; }        
+        public string Email { get; set; }        
     }
 }

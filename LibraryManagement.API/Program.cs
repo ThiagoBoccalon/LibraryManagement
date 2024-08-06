@@ -1,12 +1,19 @@
 using LibraryManagement.API.Controllers;
+using LibraryManagement.API.Models;
 using LibraryManagement.Application.Services.Implementations;
 using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<LibraryManagementDbContext>();
+var config = builder.Configuration;
+builder.Services.Configure<OpeningTimeOption>(config.GetSection("OpeningTime"));
+
+var connectionString = builder.Configuration.GetConnectionString("LibraryManagementCs");
+builder.Services.AddDbContext<LibraryManagementDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserService, UserService>();

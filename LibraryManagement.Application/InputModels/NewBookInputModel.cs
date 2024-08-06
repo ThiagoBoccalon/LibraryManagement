@@ -11,8 +11,7 @@ namespace LibraryManagement.Application.InputModels
     {
         public string Title { get; set; }
         public string Author { get; set; }
-        public int PublicationYear { get; set; }
-        public BookStatusEnum Status { get; set; }
+        public int PublicationYear { get; set; }        
         public string ISBN { get; set; }
     }
 }

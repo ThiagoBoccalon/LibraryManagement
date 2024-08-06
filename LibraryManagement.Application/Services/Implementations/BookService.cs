@@ -25,7 +25,9 @@ namespace LibraryManagement.Application.Services.Implementations
             var books = _dbContext.Books;
 
             var booksViewModel = books
-                .Select(p => new BookViewModel(p.Id, p.Title, p.Author, p.ISBN, p.PublicationYear))
+                .Select(p => new BookViewModel(p.Id, p.Title, p.Author, p.ISBN, p.PublicationYear, p.Status))
+                .AsEnumerable()
+                .Where(p => p.Status != BookStatusEnum.Deleted)
                 .ToList();
 
             return booksViewModel;
@@ -45,19 +47,20 @@ namespace LibraryManagement.Application.Services.Implementations
                 book.Title,
                 book.Author,
                 book.ISBN,
-                book.PublicationYear
+                book.PublicationYear,
+                book.Status
                 );
 
             return bookViewModel;
         }
 
-        public List<BookDetailsViewModel> GetAllWithParameter(string query, BookStatusEnum bookStatusEnum)
+        public List<BookViewModel> GetAllWithParameter(string query, BookStatusEnum bookStatusEnum)
         {
             var books = _dbContext.Books;
 
             var booksViewModel = books
                 .Select(b =>
-                    new BookDetailsViewModel(
+                    new BookViewModel(
                         b.Id,
                         b.Title,
                         b.Author,
@@ -65,6 +68,7 @@ namespace LibraryManagement.Application.Services.Implementations
                         b.PublicationYear,
                         b.Status
                         ))
+                .AsEnumerable()
                 .Where(b => b.Status == bookStatusEnum)
                 .ToList();
 
@@ -81,6 +85,7 @@ namespace LibraryManagement.Application.Services.Implementations
                 );
 
             _dbContext.Books.Add(book);
+            _dbContext.SaveChanges();
 
             return book.Id;
         }
@@ -95,13 +100,17 @@ namespace LibraryManagement.Application.Services.Implementations
                 inputModel.ISBN,
                 inputModel.PublicationYear
                 );
+
+            _dbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var book = _dbContext.Books.FirstOrDefault(p => p.Id == id);
 
-            book.GettingBookUnvailible();
+            book.GettingBookDeleted();
+
+            _dbContext.SaveChanges();
         }
     }
 }

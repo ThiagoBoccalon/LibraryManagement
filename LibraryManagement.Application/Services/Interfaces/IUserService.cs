@@ -11,6 +11,7 @@ namespace LibraryManagement.Application.Services.Interfaces
     public interface IUserService
     {   
         UserViewModel GetUser(int id);
-        int Create(CreateUserInputModel inputModel);
+        int CreateUserCommon(CreateUserCommonInputModel inputModel);
+        int CreateUserStaff(CreateUserStaffInputModel inputModel);
     }
 }

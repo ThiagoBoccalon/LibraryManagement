@@ -9,6 +9,7 @@ namespace LibraryManagement.Core.Enums
     public enum BookStatusEnum
     {
         Available = 0,        
-        Unvailable = 1
+        Unvailable = 1,
+        Deleted = 2
     }
 }
