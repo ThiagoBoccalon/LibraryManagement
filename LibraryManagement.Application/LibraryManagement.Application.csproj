@@ -11,4 +11,17 @@
     <ProjectReference Include="..\LibraryManagement.Infrastructure\LibraryManagement.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Queries\Books\GetAllBooksWithParameter\" />
+    <Folder Include="Queries\Books\GetBookById\" />
+    <Folder Include="Queries\Loans\GetAllLoans\" />
+    <Folder Include="Queries\Loans\GetAllLoansWithParameter\" />
+    <Folder Include="Queries\Loans\GetBookById\" />
+    <Folder Include="Queries\Users\GetUserById\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+  </ItemGroup>
+
 </Project>
