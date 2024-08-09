@@ -1,6 +1,10 @@
 ﻿using LibraryManagement.API.Models;
+using LibraryManagement.Application.Commands.UserCommands.CreateCommonUser;
+using LibraryManagement.Application.Commands.UserCommands.CreateStaffUser;
 using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.Queries.Users.GetUserById;
 using LibraryManagement.Application.Services.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
@@ -8,16 +12,17 @@ namespace LibraryManagement.API.Controllers
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly IMediator _mediator;
+        public UsersController(IMediator mediator)
         {
-            _userService = userService;
+            _mediator = mediator;
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var user = _userService.GetUser(id);
+            var getUserByIdQuery= new GetUserByIdQuery(id);
+            var user = await _mediator.Send(getUserByIdQuery);
 
             if (user == null)
             {
@@ -28,19 +33,19 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpPost("api/commonUser")]
-        public IActionResult PostCommonUser([FromBody] CreateUserCommonInputModel inputModel)
+        public async Task<IActionResult> PostCommonUser([FromBody] CreateCommonUserCommand command)
         {
-            var id = _userService.CreateUserCommon(inputModel);
+            var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpPost("api/staffUser")]
-        public IActionResult PostStaffuser([FromBody] CreateUserStaffInputModel inputModel)
+        public async Task<IActionResult> PostStaffUser([FromBody] CreateStaffUserCommand command)
         {
-            var id = _userService.CreateUserStaff(inputModel);
+            var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpPut("{id}")]

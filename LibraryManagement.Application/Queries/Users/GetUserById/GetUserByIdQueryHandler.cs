@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,19 @@ namespace LibraryManagement.Application.Queries.Users.GetUserById
             _dbContext = dbContext;
         }
 
-        public Task<UserViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<UserViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await _dbContext.Users
+                .SingleOrDefaultAsync(b => b.Id == request.Id);
+
+            if (user == null) return null;
+
+            var userDetailsViewModel = new UserViewModel(
+                user.UserName,
+                user.Email
+                );
+
+            return userDetailsViewModel;
         }
     }
 }
