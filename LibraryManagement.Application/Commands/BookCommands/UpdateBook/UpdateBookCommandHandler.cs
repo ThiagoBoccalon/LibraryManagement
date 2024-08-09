@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using LibraryManagement.Infrastructure.Persistence;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,27 @@ namespace LibraryManagement.Application.Commands.BookCommands.UpdateBook
 {
     public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Unit>
     {
-        public Task<Unit> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
+        private readonly LibraryManagementDbContext _dbContext;
+
+        public UpdateBookCommandHandler(LibraryManagementDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+        }
+
+        public async Task<Unit> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
+        {
+            var book = _dbContext.Books.FirstOrDefault(b => b.Id == request.Id);
+
+            book.Update(
+                request.Title, 
+                request.Author, 
+                request.ISBN, 
+                request.PublicationYear, 
+                request.Status);
+
+            await _dbContext.SaveChangesAsync();
+
+            return Unit.Value;
         }
     }
 }

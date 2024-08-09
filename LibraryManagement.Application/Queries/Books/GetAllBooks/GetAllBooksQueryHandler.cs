@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,15 @@ namespace LibraryManagement.Application.Queries.Books.GetAllBooks
             _dbContext = dbContext;
         }
 
-        public Task<List<BookViewModel>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
+        public async Task<List<BookViewModel>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var books = _dbContext.Books;
+
+            var booksViewModel = await books
+                .Select(p => new BookViewModel(p.Id, p.Title, p.Author, p.ISBN, p.PublicationYear, p.Status))
+                .ToListAsync();
+
+            return booksViewModel;
         }
     }
 }

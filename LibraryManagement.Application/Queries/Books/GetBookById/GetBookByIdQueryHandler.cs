@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,23 @@ namespace LibraryManagement.Application.Queries.Books.GetBookById
             _dbContext = dbContext;
         }
 
-        public Task<BookViewModel> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+        public async Task<BookViewModel> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var book = await _dbContext.Books
+                .SingleOrDefaultAsync(b => b.Id == request.Id);
+
+            if (book == null) return null;
+
+            var bookDetailsViewModel = new BookViewModel(
+                book.Id,
+                book.Title,
+                book.Author,
+                book.ISBN,
+                book.PublicationYear,
+                book.Status
+                );
+
+            return bookDetailsViewModel;
         }
     }
 }

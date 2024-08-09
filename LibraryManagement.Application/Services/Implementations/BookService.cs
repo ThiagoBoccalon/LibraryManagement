@@ -98,7 +98,8 @@ namespace LibraryManagement.Application.Services.Implementations
                 inputModel.Title,
                 inputModel.Author,
                 inputModel.ISBN,
-                inputModel.PublicationYear
+                inputModel.PublicationYear,
+                inputModel.Status
                 );
 
             _dbContext.SaveChanges();
