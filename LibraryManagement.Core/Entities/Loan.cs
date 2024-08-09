@@ -26,11 +26,10 @@ namespace LibraryManagement.Core.Entities
         public DateTime LoanAtStarted { get; private set; }
         public DateTime LoanForReturning { get; private set; }
 
-        public void Update(int idUser, int idBook, DateTime loanAtStarted)
+        public void Update(int idUser, int idBook)
         {            
             IdUser = idUser;
-            IdBook = idBook;
-            LoanAtStarted = loanAtStarted;
+            IdBook = idBook;            
         }
 
         public string Renewal()

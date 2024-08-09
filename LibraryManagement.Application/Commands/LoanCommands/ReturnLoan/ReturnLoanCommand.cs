@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.LoanCommands.ReturnLoan
 {
-    public class ReturnLoanCommand : IRequest<Unit>
+    public class ReturnLoanCommand : IRequest<string>
     {
         public ReturnLoanCommand(int id)
         {

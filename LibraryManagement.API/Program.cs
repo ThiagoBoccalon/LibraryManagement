@@ -1,8 +1,10 @@
 using LibraryManagement.API.Controllers;
 using LibraryManagement.API.Models;
+using LibraryManagement.Application.Commands.BookCommands.CreateBook;
 using LibraryManagement.Application.Services.Implementations;
 using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddMediatR(typeof(CreateBookCommand));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

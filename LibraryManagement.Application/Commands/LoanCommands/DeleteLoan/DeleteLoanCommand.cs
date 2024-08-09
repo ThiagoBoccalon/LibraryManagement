@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.LoanCommands.DeleteLoan
 {
-    public class DeleteLoanCommand : IRequest<Unit>
+    public class DeleteLoanCommand : IRequest<string>
     {
         public DeleteLoanCommand(int id) 
         { 

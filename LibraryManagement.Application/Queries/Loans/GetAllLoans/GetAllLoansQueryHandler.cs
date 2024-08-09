@@ -1,11 +1,7 @@
 ﻿using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Application.Queries.Loans.GetAllLoans
 {
@@ -18,9 +14,15 @@ namespace LibraryManagement.Application.Queries.Loans.GetAllLoans
             _dbContext = dbContext;
         }
 
-        public Task<List<LoanViewModel>> Handle(GetAllLoansQuery request, CancellationToken cancellationToken)
+        public async Task<List<LoanViewModel>> Handle(GetAllLoansQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var loans = _dbContext.Loans;
+
+            var loansViewModel = await loans
+                .Select(l => new LoanViewModel(l.Id, l.IdUser, l.IdBook, l.LoanAtStarted, l.LoanForReturning))
+                .ToListAsync();
+
+            return loansViewModel;
         }
     }
 }

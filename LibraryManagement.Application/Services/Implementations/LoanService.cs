@@ -114,7 +114,7 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             var loan = _dbContext.Loans.FirstOrDefault(l => l.Id == id);
 
-            loan.Update(inputModel.IdUser, inputModel.IdBook, inputModel.LoanStartedAt);
+            loan.Update(inputModel.IdUser, inputModel.IdBook);
 
             _dbContext.SaveChanges();
         }

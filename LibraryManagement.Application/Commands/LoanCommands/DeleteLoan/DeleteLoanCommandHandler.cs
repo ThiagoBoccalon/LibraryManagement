@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using LibraryManagement.Infrastructure.Persistence;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +9,24 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.LoanCommands.DeleteLoan
 {
-    public class DeleteLoanCommandHandler : IRequestHandler<DeleteLoanCommand, Unit>
+    public class DeleteLoanCommandHandler : IRequestHandler<DeleteLoanCommand, string>
     {
-        public Task<Unit> Handle(DeleteLoanCommand request, CancellationToken cancellationToken)
+        private readonly LibraryManagementDbContext _dbContext;
+
+        public DeleteLoanCommandHandler(LibraryManagementDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+        }
+
+        public async Task<string> Handle(DeleteLoanCommand request, CancellationToken cancellationToken)
+        {
+            var loan = await _dbContext.Loans.SingleOrDefaultAsync(l => l.Id == request.Id);
+
+            var message = loan.Delete();
+
+            await _dbContext.SaveChangesAsync();
+
+            return message;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace LibraryManagement.Application.Commands.LoanCommands.CreateLoan
     public class CreateLoanCommand : IRequest<int>
     {
         public int IdUser { get; set; }
-        public int IdBook { get; set; }
-        public DateTime LoanStartedAt { get; set; }
+        public int IdBook { get; set; }        
     }
 }
