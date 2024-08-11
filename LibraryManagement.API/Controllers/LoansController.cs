@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.Application.Commands.LoanCommands.CreateLoan;
 using LibraryManagement.Application.Commands.LoanCommands.DeleteLoan;
+using LibraryManagement.Application.Commands.LoanCommands.RenewalLoan;
 using LibraryManagement.Application.Commands.LoanCommands.ReturnLoan;
 using LibraryManagement.Application.Commands.LoanCommands.UpdateLoan;
 using LibraryManagement.Application.InputModels;
@@ -86,6 +87,18 @@ namespace LibraryManagement.API.Controllers
 
             if (messageResult == null) return NotFound();
                         
+            return Ok(messageResult);
+        }
+
+        [HttpPut("{id}/renewal")]
+        public async Task<IActionResult> Renewal(int id)
+        {
+
+            var returnLoanCommand = new RenewalLoanCommand(id);
+            var messageResult = await _mediator.Send(returnLoanCommand);
+
+            if (messageResult == null) return NotFound();
+
             return Ok(messageResult);
         }
 
