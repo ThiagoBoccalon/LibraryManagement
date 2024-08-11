@@ -3,7 +3,9 @@ using LibraryManagement.API.Models;
 using LibraryManagement.Application.Commands.BookCommands.CreateBook;
 using LibraryManagement.Application.Services.Implementations;
 using LibraryManagement.Application.Services.Interfaces;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
+using LibraryManagement.Infrastructure.Persistence.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +19,9 @@ var connectionString = builder.Configuration.GetConnectionString("LibraryManagem
 builder.Services.AddDbContext<LibraryManagementDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+
+//builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 

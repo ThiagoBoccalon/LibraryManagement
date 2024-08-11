@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Application.ViewModels;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +13,19 @@ namespace LibraryManagement.Application.Queries.Books.GetAllBooks
 {
     public class GetAllBooksQueryHandler : IRequestHandler<GetAllBooksQuery, List<BookViewModel>>
     {
-        private readonly LibraryManagementDbContext _dbContext;
-        public GetAllBooksQueryHandler(LibraryManagementDbContext dbContext)
+        private readonly IBookRepository _bookRepository;
+        public GetAllBooksQueryHandler(IBookRepository bookRepository)
         {
-            _dbContext = dbContext;
+            _bookRepository = bookRepository;
         }
 
         public async Task<List<BookViewModel>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
         {
-            var books = _dbContext.Books;
+            var books = await _bookRepository.GetAllAsync();
 
-            var booksViewModel = await books
+            var booksViewModel = books
                 .Select(p => new BookViewModel(p.Id, p.Title, p.Author, p.ISBN, p.PublicationYear, p.Status))
-                .ToListAsync();
+                .ToList();
 
             return booksViewModel;
         }

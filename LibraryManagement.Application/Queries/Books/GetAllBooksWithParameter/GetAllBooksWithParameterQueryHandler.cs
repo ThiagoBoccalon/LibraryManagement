@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Application.ViewModels;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,26 +13,28 @@ namespace LibraryManagement.Application.Queries.Books.GetAllBooksWithParameter
 {
     public class GetAllBooksWithParameterQueryHandler : IRequestHandler<GetAllBooksWithParamaterQuery, List<BookViewModel>>
     {
-        private readonly LibraryManagementDbContext _dbContext;
+        private readonly IBookRepository _bookRepository;
 
-        public GetAllBooksWithParameterQueryHandler(LibraryManagementDbContext dbContext)
+        public GetAllBooksWithParameterQueryHandler(IBookRepository bookRepository)
         {
-            _dbContext = dbContext;
+            _bookRepository = bookRepository;
         }
 
         public async Task<List<BookViewModel>> Handle(GetAllBooksWithParamaterQuery request, CancellationToken cancellationToken)
         {
-            var booksViewModel = _dbContext.Books
-                .Select(b => new BookViewModel(
-                    b.Id, 
-                    b.Title, 
-                    b.Author, 
-                    b.ISBN, 
-                    b.PublicationYear, 
-                    b.Status))
-                .AsEnumerable()
-                .Where(b => b.Status == request.Status)
-                .ToList();
+            var books = await _bookRepository.GetAllWithParameterAsync(request.Status);
+
+            var booksViewModel = books
+                                .Select(b => new BookViewModel(
+                                    b.Id, 
+                                    b.Title, 
+                                    b.Author, 
+                                    b.ISBN, 
+                                    b.PublicationYear, 
+                                    b.Status))
+                                .AsEnumerable()
+                                .Where(b => b.Status == request.Status)
+                                .ToList();
 
             return booksViewModel;
         }
