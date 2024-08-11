@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Application.ViewModels;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +13,16 @@ namespace LibraryManagement.Application.Queries.Loans.GetLoanById
 {
     public class GetLoanByIdQueryHandler : IRequestHandler<GetLoanByIdQuery, LoanViewModel>
     {
-        private LibraryManagementDbContext _dbContext;
+        private ILoanRepository _loanRepository;
 
-        public GetLoanByIdQueryHandler(LibraryManagementDbContext dbContext)
+        public GetLoanByIdQueryHandler(ILoanRepository loanRepository)
         {
-            _dbContext = dbContext;
+            _loanRepository = loanRepository;
         }
 
         public async Task<LoanViewModel> Handle(GetLoanByIdQuery request, CancellationToken cancellationToken)
         {
-            var loan = await _dbContext.Loans
-                .SingleOrDefaultAsync(l => l.Id == request.Id);
+            var loan = await _loanRepository.GetByIdAsync(request.Id);
 
             if (loan == null) return null;
 

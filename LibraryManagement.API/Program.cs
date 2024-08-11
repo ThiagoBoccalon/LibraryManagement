@@ -20,6 +20,7 @@ builder.Services.AddDbContext<LibraryManagementDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 
 //builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserService, UserService>();
