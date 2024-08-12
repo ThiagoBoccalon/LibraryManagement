@@ -1,6 +1,16 @@
-﻿using LibraryManagement.Application.InputModels;
-using LibraryManagement.Application.Services.Interfaces;
+﻿using LibraryManagement.Application.Commands.LoanCommands.CreateLoan;
+using LibraryManagement.Application.Commands.LoanCommands.DeleteLoan;
+using LibraryManagement.Application.Commands.LoanCommands.RenewalLoan;
+using LibraryManagement.Application.Commands.LoanCommands.ReturnLoan;
+using LibraryManagement.Application.Commands.LoanCommands.UpdateLoan;
+using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.Queries.Books.GetAllBooks;
+using LibraryManagement.Application.Queries.Books.GetAllBooksWithParameter;
+using LibraryManagement.Application.Queries.Loans.GetAllLoans;
+using LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter;
+using LibraryManagement.Application.Queries.Loans.GetLoanById;
 using LibraryManagement.Core.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
@@ -8,34 +18,35 @@ namespace LibraryManagement.API.Controllers
     [Route("api/loans")]
     public class LoansController : ControllerBase
     {
-        private readonly ILoanService _loanService;
-        private readonly IBookService _bookServise;
-        public LoansController(ILoanService loanService, IBookService bookService)
+        private readonly IMediator _mediator;
+        public LoansController(IMediator mediator)
         {
-            _loanService = loanService;
-            _bookServise = bookService;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult GetAll(string query)
+        public async Task<IActionResult> GetAllAsync(string query)
         {
-            var loans = _loanService.GetAll(query);
+            var getAllBooksQuery = new GetAllLoansQuery(query);
+            var loans = await _mediator.Send(getAllBooksQuery);
 
             return Ok(loans);
         }
 
         [HttpGet("/withParameter")]
-        public IActionResult GetAllWithParameter(string query, LoanStatusEnum loanStatusEnum)
+        public async Task<IActionResult> GetAllWithParameter(string query, LoanStatusEnum status)
         {
-            var loans = _loanService.GetAllWithParameter(query, loanStatusEnum);
-
+            var getAllWithParameter = new GetAllLoansWithParameterQuery(query, status);
+            var loans = await _mediator.Send(getAllWithParameter);
+                
             return Ok(loans);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var loan = _loanService.GetById(id);
+            var getLoanById = new GetLoanByIdQuery(id);
+            var loan = await _mediator.Send(getLoanById);
 
             if (loan == null)
             {
@@ -46,35 +57,48 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewLoanInputModel inputModel)
-        {
-            var id = _loanService.Create(inputModel);
+        public async Task<IActionResult> Post([FromBody] CreateLoanCommand command)
+        {            
+            var id = await _mediator.Send(command);                
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
+        /*
+         * Put for Renewal Loan must be to do soon.
+         */
+
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateLoanInputModel inputModel)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateLoanCommand command)
         {
-            _loanService.Update(id, inputModel);
+            command.Id = id;
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
         [HttpPut("{id}/return")]
-        public IActionResult Return(int id)
+        public async Task<IActionResult> Return(int id)
         {
-            var loanRequest = _loanService.GetById(id);
 
-            if (loanRequest == null) return NotFound();
+            var returnLoanCommand = new ReturnLoanCommand(id);
+            var messageResult = await _mediator.Send(returnLoanCommand);
 
-            _bookServise.Delete(loanRequest.IdBook);
+            if (messageResult == null) return NotFound();
+                        
+            return Ok(messageResult);
+        }
 
-            var loan = _loanService.Return(id);
+        [HttpPut("{id}/renewal")]
+        public async Task<IActionResult> Renewal(int id)
+        {
 
-            if (loan == null) return NotFound();
+            var returnLoanCommand = new RenewalLoanCommand(id);
+            var messageResult = await _mediator.Send(returnLoanCommand);
 
-            return Ok(loan);
+            if (messageResult == null) return NotFound();
+
+            return Ok(messageResult);
         }
 
         /*
@@ -83,17 +107,12 @@ namespace LibraryManagement.API.Controllers
          * Second: Delete if conditions allow the loan existed.
          */
         [HttpDelete("{id}/delete")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var loanRequest = _loanService.GetById(id);
+            var deleteLoanCommand = new DeleteLoanCommand(id);
+            var messageResult = await _mediator.Send(deleteLoanCommand);
 
-            if (loanRequest == null) return NotFound();
-
-            _bookServise.Delete(loanRequest.IdBook);
-
-            var loan = _loanService.Delete(id);
-
-            return Ok(loan);
+            return Ok(messageResult);
         }
     }
 }

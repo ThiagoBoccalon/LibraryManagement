@@ -26,18 +26,18 @@ namespace LibraryManagement.Core.Entities
         public DateTime LoanAtStarted { get; private set; }
         public DateTime LoanForReturning { get; private set; }
 
-        public void Update(int idUser, int idBook, DateTime loanAtStarted)
+        public void Update(int idUser, int idBook)
         {            
             IdUser = idUser;
-            IdBook = idBook;
-            LoanAtStarted = loanAtStarted;
+            IdBook = idBook;            
         }
 
         public string Renewal()
         {
             if (DateTime.Now <= LoanForReturning)
             {
-                LoanForReturning = DateTime.Now.Date.AddDays(7);
+                
+                LoanForReturning = DateTime.Now.AddDays(14);
                 var newLoanForReturning = LoanForReturning.ToString("MM-dd");
                 return $"Your Loan has been renewed for {newLoanForReturning}";
             }

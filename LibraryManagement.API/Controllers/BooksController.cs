@@ -1,6 +1,12 @@
-﻿using LibraryManagement.Application.InputModels;
-using LibraryManagement.Application.Services.Interfaces;
+﻿using LibraryManagement.Application.Commands.BookCommands.CreateBook;
+using LibraryManagement.Application.Commands.BookCommands.DeleteBook;
+using LibraryManagement.Application.Commands.BookCommands.UpdateBook;
+using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.Queries.Books.GetAllBooks;
+using LibraryManagement.Application.Queries.Books.GetAllBooksWithParameter;
+using LibraryManagement.Application.Queries.Books.GetBookById;
 using LibraryManagement.Core.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
@@ -8,62 +14,68 @@ namespace LibraryManagement.API.Controllers
     [Route("api/books")]
     public class BooksController : ControllerBase
     {
-        private readonly IBookService _bookService;
+        private readonly IMediator _mediator;
 
-        public BooksController(IBookService bookService)
+        public BooksController(IMediator mediator)
         {
-            _bookService = bookService;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult GetAll(string query)
+        public async Task<IActionResult> GetAll(string query)
         {
-            var books = _bookService.GetAll(query);
+            var getAllBooksQuery = new GetAllBooksQuery(query);
+            var books = await _mediator.Send(getAllBooksQuery);
 
             return Ok(books);
         }
 
         [HttpGet("/withStatus")]
-        public IActionResult GetAllWithParameter(string query, BookStatusEnum bookStatusEnum)
+        public async Task<IActionResult> GetAllWithParameter(string query, BookStatusEnum bookStatusEnum)
         {
-            var book = _bookService.GetAllWithParameter(query, bookStatusEnum);
+            var getAllWithParameter = new GetAllBooksWithParamaterQuery(query, bookStatusEnum);
+            var books = await _mediator.Send(getAllWithParameter);
 
-            return Ok(book);
+            return Ok(books);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var book = _bookService.GetById(id);
+            var getBookByIdQuery = new GetBookByIdQuery(id);
+            var book = await _mediator.Send(getBookByIdQuery);
 
             if (book == null)
             {
                 return NotFound();
             }
+            
             return Ok(book);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewBookInputModel inputModel)
+        public async Task<IActionResult> Post([FromBody] CreateBookCommand command)
         {
-            var id = _bookService.Create(inputModel);
+            var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateBookInputModel inputModel)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateBookCommand command)
         {
-            _bookService.Update(id, inputModel);
+            command.Id = id;
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _bookService.Delete(id);
-
+            var deleteBookCommand = new DeleteBookCommand(id);
+            await _mediator.Send(deleteBookCommand);
+            
             return NoContent();
         }
     }
