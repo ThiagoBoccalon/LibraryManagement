@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Infrastructure.Persistence;
+﻿using LibraryManagement.Core.Repositories;
+using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,20 +12,20 @@ namespace LibraryManagement.Application.Commands.LoanCommands.DeleteLoan
 {
     public class DeleteLoanCommandHandler : IRequestHandler<DeleteLoanCommand, string>
     {
-        private readonly LibraryManagementDbContext _dbContext;
+        private readonly ILoanRepository _loanRepository;
 
-        public DeleteLoanCommandHandler(LibraryManagementDbContext dbContext)
+        public DeleteLoanCommandHandler(ILoanRepository loanRepository)
         {
-            _dbContext = dbContext;
+            _loanRepository = loanRepository;
         }
 
         public async Task<string> Handle(DeleteLoanCommand request, CancellationToken cancellationToken)
         {
-            var loan = await _dbContext.Loans.SingleOrDefaultAsync(l => l.Id == request.Id);
+            var loan = await _loanRepository.GetByIdAsync(request.Id);
 
             var message = loan.Delete();
 
-            await _dbContext.SaveChangesAsync();
+            await _loanRepository.SaveChangesAsync();
 
             return message;
         }
