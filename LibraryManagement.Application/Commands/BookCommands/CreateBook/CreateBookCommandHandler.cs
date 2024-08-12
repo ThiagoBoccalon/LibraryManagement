@@ -1,5 +1,4 @@
-﻿using LibraryManagement.Application.Services.Interfaces;
-using LibraryManagement.Core.Entities;
+﻿using LibraryManagement.Core.Entities;
 using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;

@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Application.ViewModels;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +13,16 @@ namespace LibraryManagement.Application.Queries.Users.GetUserById
 {
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserViewModel>
     {
-        private LibraryManagementDbContext _dbContext;
+        private IUserRepository _userRepository;
 
-        public GetUserByIdQueryHandler(LibraryManagementDbContext dbContext)
+        public GetUserByIdQueryHandler(IUserRepository userRepository)
         {
-            _dbContext = dbContext;
+            _userRepository = userRepository;
         }
 
         public async Task<UserViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users
-                .SingleOrDefaultAsync(b => b.Id == request.Id);
+            var user = await _userRepository.GetUserAsync(request.Id);                
 
             if (user == null) return null;
 

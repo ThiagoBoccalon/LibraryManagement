@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Core.Repositories
 {
-    public interface ILoanRepository
+    public interface ILoanRepository : IBasedRepository
     {
         Task<List<Loan>> GetAllAsync();
         Task<Loan> GetByIdAsync(int id);
         Task<List<Loan>> GetLoansWithParameterAsync(LoanStatusEnum status);
         Task CreateLoanAsync(Loan loan);
-        Task SaveChangesAsync();
-
     }
 }

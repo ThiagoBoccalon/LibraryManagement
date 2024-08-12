@@ -9,9 +9,8 @@ using LibraryManagement.Core.Entities;
 
 namespace LibraryManagement.Core.Repositories
 {
-    public interface IBookRepository
-    {
-        Task SaveChangesAsync();
+    public interface IBookRepository : IBasedRepository
+    {        
         Task<List<Book>> GetAllAsync();
         Task<Book> GetByIdAsync(int id);
         Task<List<Book>> GetAllWithParameterAsync(BookStatusEnum bookStatusEnum);

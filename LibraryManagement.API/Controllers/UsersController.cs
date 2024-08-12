@@ -3,7 +3,6 @@ using LibraryManagement.Application.Commands.UserCommands.CreateCommonUser;
 using LibraryManagement.Application.Commands.UserCommands.CreateStaffUser;
 using LibraryManagement.Application.InputModels;
 using LibraryManagement.Application.Queries.Users.GetUserById;
-using LibraryManagement.Application.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

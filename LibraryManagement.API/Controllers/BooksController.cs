@@ -5,7 +5,6 @@ using LibraryManagement.Application.InputModels;
 using LibraryManagement.Application.Queries.Books.GetAllBooks;
 using LibraryManagement.Application.Queries.Books.GetAllBooksWithParameter;
 using LibraryManagement.Application.Queries.Books.GetBookById;
-using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

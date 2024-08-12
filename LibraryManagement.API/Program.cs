@@ -1,8 +1,6 @@
 using LibraryManagement.API.Controllers;
 using LibraryManagement.API.Models;
 using LibraryManagement.Application.Commands.BookCommands.CreateBook;
-using LibraryManagement.Application.Services.Implementations;
-using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using LibraryManagement.Infrastructure.Persistence.Repositories;
@@ -21,9 +19,7 @@ builder.Services.AddDbContext<LibraryManagementDbContext>(options =>
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
-
-builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 

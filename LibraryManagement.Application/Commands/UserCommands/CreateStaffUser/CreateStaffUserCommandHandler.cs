@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Core.Entities;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +13,18 @@ namespace LibraryManagement.Application.Commands.UserCommands.CreateStaffUser
 {
     public class CreateStaffUserCommandHandler : IRequestHandler<CreateStaffUserCommand, int>
     {
-        private readonly LibraryManagementDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
 
-        public CreateStaffUserCommandHandler(LibraryManagementDbContext dbContext) 
+        public CreateStaffUserCommandHandler(IUserRepository userRepository) 
         { 
-            _dbContext = dbContext;
+            _userRepository = userRepository;
         }
 
         public async Task<int> Handle(CreateStaffUserCommand request, CancellationToken cancellationToken)
         {
             var user = new User(request.UserName, request.Address, request.PostCode, request.Email, request.Role);
 
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
+            await _userRepository.CreateUserAsync(user);
 
             return user.Id;
         }

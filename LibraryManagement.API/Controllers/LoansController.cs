@@ -9,7 +9,6 @@ using LibraryManagement.Application.Queries.Books.GetAllBooksWithParameter;
 using LibraryManagement.Application.Queries.Loans.GetAllLoans;
 using LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter;
 using LibraryManagement.Application.Queries.Loans.GetLoanById;
-using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
