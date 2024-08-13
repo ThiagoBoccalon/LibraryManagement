@@ -11,11 +11,13 @@ using LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter;
 using LibraryManagement.Application.Queries.Loans.GetLoanById;
 using LibraryManagement.Core.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
 {
     [Route("api/loans")]
+    [Authorize]
     public class LoansController : ControllerBase
     {
         private readonly IMediator _mediator;

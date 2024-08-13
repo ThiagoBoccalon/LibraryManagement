@@ -7,11 +7,13 @@ using LibraryManagement.Application.Queries.Books.GetAllBooksWithParameter;
 using LibraryManagement.Application.Queries.Books.GetBookById;
 using LibraryManagement.Core.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
 {
     [Route("api/books")]
+    [Authorize]
     public class BooksController : ControllerBase
     {
         private readonly IMediator _mediator;

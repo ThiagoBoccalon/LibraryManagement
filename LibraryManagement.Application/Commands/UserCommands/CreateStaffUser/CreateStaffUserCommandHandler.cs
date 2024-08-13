@@ -22,7 +22,7 @@ namespace LibraryManagement.Application.Commands.UserCommands.CreateStaffUser
 
         public async Task<int> Handle(CreateStaffUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new User(request.UserName, request.Address, request.PostCode, request.Email, request.Role);
+            var user = new User(request.UserName, request.Email, request.Password , request.Address, request.PostCode, request.Role);
 
             await _userRepository.CreateUserAsync(user);
 
