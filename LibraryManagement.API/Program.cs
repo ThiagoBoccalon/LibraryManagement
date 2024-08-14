@@ -1,12 +1,15 @@
 using FluentValidation.AspNetCore;
 using LibraryManagement.API.Controllers;
+using LibraryManagement.API.ExceptionHandler;
 using LibraryManagement.API.Filters;
 using LibraryManagement.API.Models;
+using LibraryManagement.Application;
 using LibraryManagement.Application.Commands.BookCommands.CreateBook;
 using LibraryManagement.Application.Commands.UserCommands.CreateCommonUser;
 using LibraryManagement.Application.Commands.UserCommands.CreateStaffUser;
 using LibraryManagement.Application.Validators;
 using LibraryManagement.Core.Repositories;
+using LibraryManagement.Infrastructure;
 using LibraryManagement.Infrastructure.Persistence;
 using LibraryManagement.Infrastructure.Persistence.Repositories;
 using MediatR;
@@ -19,21 +22,17 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
+
+builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var config = builder.Configuration;
 builder.Services.Configure<OpeningTimeOption>(config.GetSection("OpeningTime"));
 
-var connectionString = builder.Configuration.GetConnectionString("LibraryManagementCs");
-builder.Services.AddDbContext<LibraryManagementDbContext>(options =>
-    options.UseSqlServer(connectionString));
-
-builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped<ILoanRepository, LoanRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter)))
-    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCommonUserCommandValidator>());
-
-builder.Services.AddMediatR(typeof(CreateBookCommand));
+builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -87,18 +86,16 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
 // Configure the HTTP request pipeline.
 
-/*
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-*/
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

@@ -60,11 +60,11 @@ namespace LibraryManagement.API.Controllers
         {
             return NoContent();
         }
-
-        [HttpPut("{login}")]
+        
+        [HttpPut("api/login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
-        {
+        {            
             var loginUserviewModel = await _mediator.Send(command);
 
             if (loginUserviewModel == null)
@@ -73,6 +73,6 @@ namespace LibraryManagement.API.Controllers
             }
 
             return Ok(loginUserviewModel);
-        }
+        }        
     }
 }
