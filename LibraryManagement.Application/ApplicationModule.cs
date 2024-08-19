@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using LibraryManagement.Application.Validators;
+using LibraryManagement.Application.Commands.UserCommands.CreateCommonUser;
 
 namespace LibraryManagement.Application
 {
@@ -19,7 +21,7 @@ namespace LibraryManagement.Application
         private static IServiceCollection AddHandlers(this IServiceCollection services)
         {
             services.AddMediatR(config => 
-                config.RegisterServicesFromAssemblyContaining<CreateBookCommand>());
+                config.RegisterServicesFromAssemblyContaining<CreateCommonUserCommand>());
 
             return services;
         }
@@ -28,7 +30,7 @@ namespace LibraryManagement.Application
         {
             services
                 .AddFluentValidationAutoValidation()
-                .AddValidatorsFromAssemblyContaining<CreateBookCommand>();
+                .AddValidatorsFromAssemblyContaining<CreateCommonUserCommandValidator>();
 
             return services;
         }

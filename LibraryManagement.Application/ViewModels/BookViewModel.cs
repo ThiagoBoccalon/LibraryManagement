@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Core.Enums;
+﻿using LibraryManagement.Core.Entities;
+using LibraryManagement.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,9 @@ namespace LibraryManagement.Application.ViewModels
         public string ISBN { get; private set; }
         public int PublicationYear { get; private set; }
         public BookStatusEnum Status { get; private set; }
+
+        public static BookViewModel FromEntity(Book book)
+            => new(book.Id, book.Title, book.Author, book.ISBN, 
+                book.PublicationYear, book.Status);
     }
 }

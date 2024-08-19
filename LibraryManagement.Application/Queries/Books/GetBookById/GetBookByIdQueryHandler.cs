@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Books.GetBookById
 {
-    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, BookViewModel>
+    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, ResultViewModel<BookViewModel>>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -20,22 +21,18 @@ namespace LibraryManagement.Application.Queries.Books.GetBookById
             _bookRepository = bookRepository;
         }
 
-        public async Task<BookViewModel> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<BookViewModel>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
         {
             var book = await _bookRepository.GetByIdAsync(request.Id);
 
-            if (book == null) return null;
+            if (book is null)
+            {
+                return ResultViewModel<BookViewModel>.Error("Book not exist.");
+            }
+            
+            var model = BookViewModel.FromEntity(book);
 
-            var bookDetailsViewModel = new BookViewModel(
-                book.Id,
-                book.Title,
-                book.Author,
-                book.ISBN,
-                book.PublicationYear,
-                book.Status
-                );
-
-            return bookDetailsViewModel;
+            return ResultViewModel<BookViewModel>.Success(model);
         }
     }
 }
