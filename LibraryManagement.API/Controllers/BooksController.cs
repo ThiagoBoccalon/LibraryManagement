@@ -45,22 +45,22 @@ namespace LibraryManagement.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var getBookByIdQuery = new GetBookByIdQuery(id);
-            var book = await _mediator.Send(getBookByIdQuery);
+            var result = await _mediator.Send(getBookByIdQuery);
 
-            if (book == null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
             
-            return Ok(book);
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateBookCommand command)
         {
-            var id = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, command);
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpPut("{id}")]

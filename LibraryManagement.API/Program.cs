@@ -1,7 +1,6 @@
 using FluentValidation.AspNetCore;
 using LibraryManagement.API.Controllers;
 using LibraryManagement.API.ExceptionHandler;
-using LibraryManagement.API.Filters;
 using LibraryManagement.API.Models;
 using LibraryManagement.Application;
 using LibraryManagement.Application.Commands.BookCommands.CreateBook;
