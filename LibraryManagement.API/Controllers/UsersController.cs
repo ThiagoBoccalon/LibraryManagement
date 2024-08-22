@@ -13,6 +13,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LibraryManagement.API.Controllers
 {
+    [ApiController]
     [Route("api/users")]
     [Authorize]
     public class UsersController : ControllerBase
