@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Core.Enums;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Core.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.BookCommands.UpdateBook
 {
-    public class UpdateBookCommand : IRequest<Unit>
+    public class UpdateBookCommand : IRequest<ResultViewModel<Unit>>
     {   
         public UpdateBookCommand(int id)
         {

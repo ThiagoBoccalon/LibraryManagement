@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using LibraryManagement.Application.InputModels;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.LoanCommands.ReturnLoan
 {
-    public class ReturnLoanCommand : IRequest<string>
+    public class ReturnLoanCommand : IRequest<ResultViewModel<string>>
     {
         public ReturnLoanCommand(int id)
         {

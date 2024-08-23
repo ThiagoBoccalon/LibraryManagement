@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Core.Enums;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter
 {
-    public class GetAllLoansWithParameterQuery : IRequest<List<LoanDetailsViewModel>>
+    public class GetAllLoansWithParameterQuery : IRequest<ResultViewModel<List<LoanDetailsViewModel>>>
     {
         public GetAllLoansWithParameterQuery(string query, LoanStatusEnum status)
         {

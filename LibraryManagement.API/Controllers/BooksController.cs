@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
 {
+    [ApiController]
     [Route("api/books")]
     [Authorize]
     public class BooksController : ControllerBase
@@ -24,7 +25,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(string query)
+        public async Task<IActionResult> GetAll(string? query)
         {
             var getAllBooksQuery = new GetAllBooksQuery(query);
             var books = await _mediator.Send(getAllBooksQuery);
@@ -33,7 +34,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet("/withStatus")]
-        public async Task<IActionResult> GetAllWithParameter(string query, BookStatusEnum bookStatusEnum)
+        public async Task<IActionResult> GetAllWithParameter(string? query, BookStatusEnum bookStatusEnum)
         {
             var getAllWithParameter = new GetAllBooksWithParamaterQuery(query, bookStatusEnum);
             var books = await _mediator.Send(getAllWithParameter);

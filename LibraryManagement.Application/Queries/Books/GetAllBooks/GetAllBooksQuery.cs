@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Books.GetAllBooks
 {
-    public class GetAllBooksQuery : IRequest<List<BookViewModel>>
+    public class GetAllBooksQuery : IRequest<ResultViewModel<List<BookViewModel>>>
     {
         public GetAllBooksQuery(string query) 
         { 

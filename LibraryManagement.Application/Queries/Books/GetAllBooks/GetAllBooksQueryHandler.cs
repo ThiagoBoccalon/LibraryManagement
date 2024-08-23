@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Books.GetAllBooks
 {
-    public class GetAllBooksQueryHandler : IRequestHandler<GetAllBooksQuery, List<BookViewModel>>
+    public class GetAllBooksQueryHandler : IRequestHandler<GetAllBooksQuery, ResultViewModel<List<BookViewModel>>>
     {
         private readonly IBookRepository _bookRepository;
         public GetAllBooksQueryHandler(IBookRepository bookRepository)
@@ -19,7 +20,7 @@ namespace LibraryManagement.Application.Queries.Books.GetAllBooks
             _bookRepository = bookRepository;
         }
 
-        public async Task<List<BookViewModel>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<List<BookViewModel>>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
         {
             var books = await _bookRepository.GetAllAsync();
 
@@ -27,7 +28,7 @@ namespace LibraryManagement.Application.Queries.Books.GetAllBooks
                 .Select(p => new BookViewModel(p.Id, p.Title, p.Author, p.ISBN, p.PublicationYear, p.Status))
                 .ToList();
 
-            return booksViewModel;
+            return ResultViewModel<List<BookViewModel>>.Success(booksViewModel);
         }
     }
 }

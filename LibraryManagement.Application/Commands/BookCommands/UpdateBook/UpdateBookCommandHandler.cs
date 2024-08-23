@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Core.Repositories;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.BookCommands.UpdateBook
 {
-    public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Unit>
+    public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, ResultViewModel<Unit>>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -19,7 +20,7 @@ namespace LibraryManagement.Application.Commands.BookCommands.UpdateBook
             _bookRepository = bookRepository;
         }
 
-        public async Task<Unit> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<Unit>> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
             var book = await _bookRepository.GetByIdAsync(request.Id);
 
@@ -32,7 +33,7 @@ namespace LibraryManagement.Application.Commands.BookCommands.UpdateBook
 
             await _bookRepository.SaveChangesAsync();
 
-            return Unit.Value;
+            return ResultViewModel<Unit>.Success(Unit.Value);
         }
     }
 }

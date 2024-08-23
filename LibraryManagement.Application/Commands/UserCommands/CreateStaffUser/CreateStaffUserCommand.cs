@@ -1,4 +1,6 @@
-﻿using LibraryManagement.Core.Enums;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Core.Entities;
+using LibraryManagement.Core.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.UserCommands.CreateStaffUser
 {
-    public class CreateStaffUserCommand : IRequest<int>
+    public class CreateStaffUserCommand : IRequest<ResultViewModel<int>>
     {
         private const string address = "237B Acton Lane";
         private const string postcode = "W4 5DL";
@@ -28,5 +30,8 @@ namespace LibraryManagement.Application.Commands.UserCommands.CreateStaffUser
         public string Email { get; set; }
         [JsonIgnore]
         public RoleEnum Role { get; set; }
+
+        public User ToEntity()
+            => new(UserName, Email, Password, Address, PostCode, Role);
     }
 }

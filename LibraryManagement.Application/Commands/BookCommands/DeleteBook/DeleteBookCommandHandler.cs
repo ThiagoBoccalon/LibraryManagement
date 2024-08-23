@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Core.Entities;
 using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.BookCommands.DeleteBook
 {
-    public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, Unit>
+    public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, ResultViewModel<Unit>>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -21,7 +22,7 @@ namespace LibraryManagement.Application.Commands.BookCommands.DeleteBook
             _bookRepository = bookRepository;
         }
 
-        public async Task<Unit> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<Unit>> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
            var book = await _bookRepository.GetByIdAsync(request.Id);
            
@@ -29,7 +30,7 @@ namespace LibraryManagement.Application.Commands.BookCommands.DeleteBook
                        
            await _bookRepository.SaveChangesAsync();
 
-            return Unit.Value;
+            return ResultViewModel<Unit>.Success(Unit.Value);
         }
     }
 }

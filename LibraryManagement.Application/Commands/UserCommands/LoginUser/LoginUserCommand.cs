@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.UserCommands.LoginUser
 {
-    public class LoginUserCommand : IRequest<LoginUserViewModel>
+    public class LoginUserCommand : IRequest<ResultViewModel<LoginUserViewModel>>
     {
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string Password { get; set; }        
     }
 }

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
 {
+    [ApiController]
     [Route("api/loans")]
     [Authorize]
     public class LoansController : ControllerBase
@@ -27,7 +28,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync(string query)
+        public async Task<IActionResult> GetAllAsync(string? query)
         {
             var getAllBooksQuery = new GetAllLoansQuery(query);
             var loans = await _mediator.Send(getAllBooksQuery);
@@ -36,7 +37,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet("/withParameter")]
-        public async Task<IActionResult> GetAllWithParameter(string query, LoanStatusEnum status)
+        public async Task<IActionResult> GetAllWithParameter(string? query, LoanStatusEnum status)
         {
             var getAllWithParameter = new GetAllLoansWithParameterQuery(query, status);
             var loans = await _mediator.Send(getAllWithParameter);

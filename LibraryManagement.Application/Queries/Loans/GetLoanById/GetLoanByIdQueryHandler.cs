@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Loans.GetLoanById
 {
-    public class GetLoanByIdQueryHandler : IRequestHandler<GetLoanByIdQuery, LoanViewModel>
+    public class GetLoanByIdQueryHandler : IRequestHandler<GetLoanByIdQuery, ResultViewModel<LoanViewModel>>
     {
         private ILoanRepository _loanRepository;
 
@@ -20,7 +21,7 @@ namespace LibraryManagement.Application.Queries.Loans.GetLoanById
             _loanRepository = loanRepository;
         }
 
-        public async Task<LoanViewModel> Handle(GetLoanByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<LoanViewModel>> Handle(GetLoanByIdQuery request, CancellationToken cancellationToken)
         {
             var loan = await _loanRepository.GetByIdAsync(request.Id);
 
@@ -34,7 +35,7 @@ namespace LibraryManagement.Application.Queries.Loans.GetLoanById
                 loan.LoanForReturning
                 );
 
-            return loanViewModel;
+            return ResultViewModel<LoanViewModel>.Success(loanViewModel);
         }
     }
 }

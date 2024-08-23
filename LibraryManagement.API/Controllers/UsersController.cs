@@ -51,9 +51,9 @@ namespace LibraryManagement.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> PostStaffUser([FromBody] CreateStaffUserCommand command)
         {
-            var id = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, command);
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpPut("api/updateUser")]
