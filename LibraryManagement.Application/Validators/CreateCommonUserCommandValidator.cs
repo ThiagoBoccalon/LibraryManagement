@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Validators
 {
-    public class CreateCommonUserCommandValidator : AbstractValidator<CreateCommonUserCommand>
+    public class CreateCommonUserCommandValidator : AbstractValidator<CreateUserCommonInputModel>
     {
         public CreateCommonUserCommandValidator()
         {

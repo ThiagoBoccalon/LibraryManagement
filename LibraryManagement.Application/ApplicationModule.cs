@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using LibraryManagement.Application.Validators;
 using LibraryManagement.Application.Commands.UserCommands.CreateCommonUser;
+using LibraryManagement.Application.Validators;
 
 namespace LibraryManagement.Application
 {
