@@ -1,4 +1,6 @@
-﻿using LibraryManagement.Core.Enums;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Core.Entities;
+using LibraryManagement.Core.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.UserCommands.CreateCommonUser
 {
-    public class CreateCommonUserCommand : IRequest<int>
+    public class CreateCommonUserCommand : IRequest<ResultViewModel<int>>
     {
         public CreateCommonUserCommand() 
         { 
@@ -22,5 +24,8 @@ namespace LibraryManagement.Application.Commands.UserCommands.CreateCommonUser
         public string Email { get; set; }
         [JsonIgnore]
         public RoleEnum Role { get; set; }
+
+        public User ToEntity()
+            => new(UserName, Email, Password, Address, PostCode, Role);
     }
 }

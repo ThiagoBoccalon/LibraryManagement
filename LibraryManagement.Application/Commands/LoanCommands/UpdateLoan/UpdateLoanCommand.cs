@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using LibraryManagement.Application.InputModels;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.LoanCommands.UpdateLoan
 {
-    public class UpdateLoanCommand : IRequest<Unit>
+    public class UpdateLoanCommand : IRequest<ResultViewModel<Unit>>
     {
         public UpdateLoanCommand(int id) 
         { 

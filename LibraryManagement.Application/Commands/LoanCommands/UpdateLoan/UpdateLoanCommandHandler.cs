@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Core.Repositories;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.LoanCommands.UpdateLoan
 {
-    public class UpdateLoanCommandHandler : IRequestHandler<UpdateLoanCommand, Unit>
+    public class UpdateLoanCommandHandler : IRequestHandler<UpdateLoanCommand, ResultViewModel<Unit>>
     {
         private readonly ILoanRepository _loanRepository;
 
@@ -18,7 +19,7 @@ namespace LibraryManagement.Application.Commands.LoanCommands.UpdateLoan
         {
             _loanRepository = loanRepository;
         }
-        public async Task<Unit> Handle(UpdateLoanCommand request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<Unit>> Handle(UpdateLoanCommand request, CancellationToken cancellationToken)
         {
             var loan = await _loanRepository.GetByIdAsync(request.Id);
 
@@ -26,7 +27,7 @@ namespace LibraryManagement.Application.Commands.LoanCommands.UpdateLoan
 
             await _loanRepository.SaveChangesAsync();
 
-            return Unit.Value;
+            return ResultViewModel<Unit>.Success(Unit.Value);
         }
     }
 }

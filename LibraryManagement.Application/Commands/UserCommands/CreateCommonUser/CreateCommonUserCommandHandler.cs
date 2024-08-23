@@ -1,5 +1,7 @@
-﻿using LibraryManagement.Core.Entities;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Core.Entities;
 using LibraryManagement.Core.Repositories;
+using LibraryManagement.Core.Service;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,22 +13,25 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.UserCommands.CreateCommonUser
 {
-    public class CreateCommonUserCommandHandler : IRequestHandler<CreateCommonUserCommand, int>
+    public class CreateCommonUserCommandHandler : IRequestHandler<CreateCommonUserCommand, ResultViewModel<int>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IAuthService _authService;
 
-        public CreateCommonUserCommandHandler(IUserRepository userRepository)
+        public CreateCommonUserCommandHandler(IUserRepository userRepository, IAuthService authService)
         {
             _userRepository = userRepository;
+            _authService = authService;
         }
 
-        public async Task<int> Handle(CreateCommonUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<int>> Handle(CreateCommonUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new User(request.UserName, request.Address, request.PostCode, request.Email, request.Role);
+            request.Password = _authService.ComputeSha256Hash(request.Password);
+            var user = request.ToEntity();
 
             await _userRepository.CreateUserAsync(user);            
 
-            return user.Id;
+            return ResultViewModel<int>.Success(user.Id);
         }
     }
 }

@@ -11,11 +11,14 @@ using LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter;
 using LibraryManagement.Application.Queries.Loans.GetLoanById;
 using LibraryManagement.Core.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
 {
+    [ApiController]
     [Route("api/loans")]
+    [Authorize]
     public class LoansController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,7 +28,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync(string query)
+        public async Task<IActionResult> GetAllAsync(string? query)
         {
             var getAllBooksQuery = new GetAllLoansQuery(query);
             var loans = await _mediator.Send(getAllBooksQuery);
@@ -34,7 +37,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet("/withParameter")]
-        public async Task<IActionResult> GetAllWithParameter(string query, LoanStatusEnum status)
+        public async Task<IActionResult> GetAllWithParameter(string? query, LoanStatusEnum status)
         {
             var getAllWithParameter = new GetAllLoansWithParameterQuery(query, status);
             var loans = await _mediator.Send(getAllWithParameter);

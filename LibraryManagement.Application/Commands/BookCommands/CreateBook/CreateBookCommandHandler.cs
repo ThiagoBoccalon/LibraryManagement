@@ -1,16 +1,10 @@
-﻿using LibraryManagement.Core.Entities;
+﻿using LibraryManagement.Application.InputModels;
 using LibraryManagement.Core.Repositories;
-using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.BookCommands.CreateBook
 {
-    public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, int>
+    public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, ResultViewModel<int>>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -19,13 +13,13 @@ namespace LibraryManagement.Application.Commands.BookCommands.CreateBook
             _bookRepository = bookRepository;
         }
 
-        public async Task<int> Handle(CreateBookCommand request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<int>> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
-            var book = new Book(request.Title, request.Author, request.ISBN, request.PublicationYear);
+            var book = request.ToEntity();
 
             await _bookRepository.CreateBookAsync(book);
 
-            return book.Id;
+            return ResultViewModel<int>.Success(book.Id);
         }
     }
 }

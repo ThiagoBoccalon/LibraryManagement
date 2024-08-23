@@ -7,11 +7,14 @@ using LibraryManagement.Application.Queries.Books.GetAllBooksWithParameter;
 using LibraryManagement.Application.Queries.Books.GetBookById;
 using LibraryManagement.Core.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
 {
+    [ApiController]
     [Route("api/books")]
+    [Authorize]
     public class BooksController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -22,7 +25,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(string query)
+        public async Task<IActionResult> GetAll(string? query)
         {
             var getAllBooksQuery = new GetAllBooksQuery(query);
             var books = await _mediator.Send(getAllBooksQuery);
@@ -31,7 +34,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet("/withStatus")]
-        public async Task<IActionResult> GetAllWithParameter(string query, BookStatusEnum bookStatusEnum)
+        public async Task<IActionResult> GetAllWithParameter(string? query, BookStatusEnum bookStatusEnum)
         {
             var getAllWithParameter = new GetAllBooksWithParamaterQuery(query, bookStatusEnum);
             var books = await _mediator.Send(getAllWithParameter);
@@ -43,22 +46,22 @@ namespace LibraryManagement.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var getBookByIdQuery = new GetBookByIdQuery(id);
-            var book = await _mediator.Send(getBookByIdQuery);
+            var result = await _mediator.Send(getBookByIdQuery);
 
-            if (book == null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
             
-            return Ok(book);
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateBookCommand command)
         {
-            var id = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, command);
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpPut("{id}")]

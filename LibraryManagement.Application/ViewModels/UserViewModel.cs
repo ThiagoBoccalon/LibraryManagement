@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryManagement.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,8 @@ namespace LibraryManagement.Application.ViewModels
         }
         public string FullName { get; private set; }
         public string Email { get; private set; }
+
+        public static UserViewModel FromEntity(User user)
+            => new(user.UserName, user.Email);
     }
 }

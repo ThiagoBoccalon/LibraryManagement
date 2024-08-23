@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Loans.GetAllLoans
 {
-    public class GetAllLoansQuery : IRequest<List<LoanViewModel>>
+    public class GetAllLoansQuery : IRequest<ResultViewModel<List<LoanViewModel>>>
     {
         public GetAllLoansQuery(string query)
         {

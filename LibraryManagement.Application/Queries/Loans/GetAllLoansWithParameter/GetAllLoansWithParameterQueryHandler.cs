@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using LibraryManagement.Core.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter
 {
-    public class GetAllLoansWithParameterQueryHandler : IRequestHandler<GetAllLoansWithParameterQuery, List<LoanDetailsViewModel>>
+    public class GetAllLoansWithParameterQueryHandler : IRequestHandler<GetAllLoansWithParameterQuery, ResultViewModel<List<LoanDetailsViewModel>>>
     {
         private ILoanRepository _loanRepository;
 
@@ -20,7 +21,7 @@ namespace LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter
             _loanRepository = loanRepository;
         }
 
-        public async Task<List<LoanDetailsViewModel>> Handle(GetAllLoansWithParameterQuery request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<List<LoanDetailsViewModel>>> Handle(GetAllLoansWithParameterQuery request, CancellationToken cancellationToken)
         {
             var loans = await _loanRepository.GetLoansWithParameterAsync(request.Status);
 
@@ -37,7 +38,7 @@ namespace LibraryManagement.Application.Queries.Loans.GetAllLoansWithParameter
                 .Where(l => l.Status == request.Status)
                 .ToList();
 
-            return loansViewModel;
+            return ResultViewModel<List<LoanDetailsViewModel>>.Success(loansViewModel);
         }
     }
 }

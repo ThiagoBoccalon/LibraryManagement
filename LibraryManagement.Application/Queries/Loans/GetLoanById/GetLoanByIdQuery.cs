@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Application.ViewModels;
+﻿using LibraryManagement.Application.InputModels;
+using LibraryManagement.Application.ViewModels;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Queries.Loans.GetLoanById
 {
-    public class GetLoanByIdQuery : IRequest<LoanViewModel>
+    public class GetLoanByIdQuery : IRequest<ResultViewModel<LoanViewModel>>
     {
         public GetLoanByIdQuery(int id) 
         {
