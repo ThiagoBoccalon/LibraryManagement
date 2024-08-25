@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Commands.LoanCommands.CreateLoan
 {
-    internal class CreateLoanCommandHandler : IRequestHandler<CreateLoanCommand, ResultViewModel<int>>
+    public class CreateLoanCommandHandler : IRequestHandler<CreateLoanCommand, ResultViewModel<int>>
     {
         private readonly ILoanRepository _loanRepository;
         public CreateLoanCommandHandler(ILoanRepository loanRepository)
