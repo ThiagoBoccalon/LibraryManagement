@@ -32,13 +32,13 @@ namespace LibraryManagement.Core.Entities
             IdBook = idBook;            
         }
 
-        public string Renewal()
+        public string Renewal(DateTime dateTimeReturning)
         {
-            if (DateTime.Now <= LoanForReturning)
+            if (DateTime.Now <= dateTimeReturning)
             {
                 
                 LoanForReturning = DateTime.Now.AddDays(14);
-                var newLoanForReturning = LoanForReturning.ToString("MM-dd");
+                var newLoanForReturning = LoanForReturning.ToString("dd/MM");
                 return $"Your Loan has been renewed for {newLoanForReturning}";
             }
 
@@ -64,9 +64,9 @@ namespace LibraryManagement.Core.Entities
             return "We appreciate you have returned books on right time";
         }
 
-        public string Delete()
+        public string Delete(LoanStatusEnum status)
         {
-            if (Status != LoanStatusEnum.DeliveredWithCharge)
+            if (status != LoanStatusEnum.DeliveredWithCharge)
             {
                 Status = LoanStatusEnum.Deleted;
 

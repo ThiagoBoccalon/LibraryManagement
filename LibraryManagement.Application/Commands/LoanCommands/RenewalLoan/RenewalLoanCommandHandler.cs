@@ -24,7 +24,7 @@ namespace LibraryManagement.Application.Commands.LoanCommands.RenewalLoan
         {
             var loan = await _loanRepository.GetByIdAsync(request.Id);
 
-            var message = loan.Renewal();
+            var message = loan.Renewal(loan.LoanForReturning);
 
             await _loanRepository.SaveChangesAsync();
 
