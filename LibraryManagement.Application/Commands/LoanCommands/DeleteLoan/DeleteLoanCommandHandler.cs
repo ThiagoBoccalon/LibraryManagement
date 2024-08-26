@@ -24,7 +24,7 @@ namespace LibraryManagement.Application.Commands.LoanCommands.DeleteLoan
         {
             var loan = await _loanRepository.GetByIdAsync(request.Id);
 
-            var message = loan.Delete();
+            var message = loan.Delete(loan.Status);
 
             await _loanRepository.SaveChangesAsync();
 

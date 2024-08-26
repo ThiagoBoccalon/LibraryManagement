@@ -23,8 +23,8 @@ namespace LibraryManagement.Application.Queries.Loans.GetAllLoans
             var loansViewModel = loans
                 .Select(l => new LoanViewModel(l.Id, l.IdUser, l.IdBook, l.LoanAtStarted, l.LoanForReturning))
                 .ToList();
-
-            return ResultViewModel<List<LoanViewModel>>.Success(loansViewModel);
+            var x = ResultViewModel<List<LoanViewModel>>.Success(loansViewModel);
+            return x;
         }
     }
 }
