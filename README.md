@@ -2,7 +2,7 @@
 
 ### 1. About the project
 
-LibraryManagment API is a project developed as a personal project. The project aims to manage users, books and loans. Users can be common users (someone go to the library to loan any book) or a staff from the library. Common users can loan any books and it have to return within 14 days if the user fails to return, a penalty of £0.25 per day will applied. Staff user is someone responsable for register books of the library and to allow the loan.
+LibraryManagment API is a project developed as a personal project. The project aims to manage users, books and loans. Users can be common users (someone goes to the library to loan any book) or staff from the library. Common users can loan any books and they have to return them within 14 days if the user fails to return them, a penalty of £0.25 per day will applied. Staff user is someone responsable for register books in the library and to allow loan.
 
 ### 2. Functionalities
 
@@ -10,7 +10,7 @@ LibraryManagment API is a project developed as a personal project. The project a
 
 - CRUD Books and Loans
 
-- I will build e a microservice responsable by manage the payment.
+- I will build e a microservice responsable for managing the payment.
 
 ### 3. Technologies used
 
