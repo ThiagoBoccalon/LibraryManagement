@@ -68,4 +68,4 @@ LibraryManagment API is a project developed as a personal project. The project a
 
 ### 6. Sreem shoots
 
-<img width="542" alt="librarymanagementAPI" src="https://github.com/user-attachments/assets/be617963-489a-4bb8-96d3-48348a28c3cc"> ![librarymanagementAPI_2](https://github.com/user-attachments/assets/13229f78-9480-4189-8f8a-b0946f9037c2)
+<img width="542" alt="librarymanagementAPI" src="https://github.com/user-attachments/assets/be617963-489a-4bb8-96d3-48348a28c3cc">
